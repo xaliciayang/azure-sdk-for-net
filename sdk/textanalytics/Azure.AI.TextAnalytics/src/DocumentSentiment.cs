@@ -11,32 +11,34 @@ namespace Azure.AI.TextAnalytics
     /// <summary>
     /// Overall predicted sentiment and confidence scores for the document.
     /// It also includes per-sentence sentiment prediction.
+    /// For more information regarding text sentiment, see
+    /// <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Text-Analytics/how-tos/text-analytics-how-to-sentiment-analysis"/>.
     /// </summary>
     public class DocumentSentiment
     {
-        internal DocumentSentiment(TextSentimentLabel sentiment, double positiveScore, double neutralScore, double negativeScore, List<TextSentiment> sentenceSentiments)
+        internal DocumentSentiment(DocumentSentimentLabel sentiment, double positiveScore, double neutralScore, double negativeScore, List<SentenceSentiment> sentenceSentiments)
         {
             Sentiment = sentiment;
-            SentimentScores = new SentimentScorePerLabel(positiveScore, neutralScore, negativeScore);
-            Sentences = new ReadOnlyCollection<TextSentiment>(sentenceSentiments);
+            ConfidenceScores = new SentimentConfidenceScorePerLabel(positiveScore, neutralScore, negativeScore);
+            Sentences = new ReadOnlyCollection<SentenceSentiment>(sentenceSentiments);
         }
 
         /// <summary>
         /// Gets the predicted sentiment for the analyzed input document
         /// or substring.
         /// </summary>
-        public TextSentimentLabel Sentiment { get; }
+        public DocumentSentimentLabel Sentiment { get; }
 
         /// <summary>
-        /// Gets the sentiment confidence score between 0 and 1,
-        /// for each sentiment label.
+        /// Gets the sentiment confidence score (Softmax score) between 0 and 1,
+        /// for each sentiment label. Higher values signify higher confidence.
         /// </summary>
-        public SentimentScorePerLabel SentimentScores { get; }
+        public SentimentConfidenceScorePerLabel ConfidenceScores { get; }
 
         /// <summary>
         /// Gets the predicted sentiment for each sentence in the corresponding
         /// document.
         /// </summary>
-        public IReadOnlyCollection<TextSentiment> Sentences { get; }
+        public IReadOnlyCollection<SentenceSentiment> Sentences { get; }
     }
 }
