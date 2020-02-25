@@ -42,14 +42,20 @@ namespace Microsoft.Azure.Management.Sql.Models
         /// <param name="state">The state of the server.</param>
         /// <param name="fullyQualifiedDomainName">The fully qualified domain
         /// name of the server.</param>
+        /// <param name="privateEndpointConnections">List of private endpoint
+        /// connections on a server</param>
+        /// <param name="minimalTlsVersion">Minimal TLS version. Allowed
+        /// values: '1.0', '1.1', '1.2'</param>
         /// <param name="tags">Resource tags.</param>
-        public ServerUpdate(string administratorLogin = default(string), string administratorLoginPassword = default(string), string version = default(string), string state = default(string), string fullyQualifiedDomainName = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>))
+        public ServerUpdate(string administratorLogin = default(string), string administratorLoginPassword = default(string), string version = default(string), string state = default(string), string fullyQualifiedDomainName = default(string), IList<ServerPrivateEndpointConnection> privateEndpointConnections = default(IList<ServerPrivateEndpointConnection>), string minimalTlsVersion = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>))
         {
             AdministratorLogin = administratorLogin;
             AdministratorLoginPassword = administratorLoginPassword;
             Version = version;
             State = state;
             FullyQualifiedDomainName = fullyQualifiedDomainName;
+            PrivateEndpointConnections = privateEndpointConnections;
+            MinimalTlsVersion = minimalTlsVersion;
             Tags = tags;
             CustomInit();
         }
@@ -90,6 +96,19 @@ namespace Microsoft.Azure.Management.Sql.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.fullyQualifiedDomainName")]
         public string FullyQualifiedDomainName { get; private set; }
+
+        /// <summary>
+        /// Gets list of private endpoint connections on a server
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.privateEndpointConnections")]
+        public IList<ServerPrivateEndpointConnection> PrivateEndpointConnections { get; private set; }
+
+        /// <summary>
+        /// Gets or sets minimal TLS version. Allowed values: '1.0', '1.1',
+        /// '1.2'
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.minimalTlsVersion")]
+        public string MinimalTlsVersion { get; set; }
 
         /// <summary>
         /// Gets or sets resource tags.

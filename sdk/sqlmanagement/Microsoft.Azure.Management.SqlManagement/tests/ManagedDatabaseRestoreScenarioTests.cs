@@ -94,7 +94,7 @@ namespace Sql.Tests
                 ManagedBackupShortTermRetentionPolicy policy = sqlClient.ManagedBackupShortTermRetentionPolicies.Get(resourceGroup.Name, managedInstance.Name, dbName);
                 Assert.Equal(startingRetention, policy.RetentionDays);
 
-                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable. 
+                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable.
                 // This will be changed in couple of weeks, howerver since building up Managed Instance takes over 60mins, this wait isn't not be a problem.
                 // No need to sleep if we are playing back the recording.
                 if (HttpMockServer.Mode == HttpRecorderMode.Record)
@@ -169,7 +169,7 @@ namespace Sql.Tests
                 });
                 Assert.NotNull(db1);
 
-                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable. 
+                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable.
                 // This will be changed in couple of weeks, howerver since building up Managed Instance takes over 60mins, this wait isn't not be a problem.
                 // No need to sleep if we are playing back the recording.
                 if (HttpMockServer.Mode == HttpRecorderMode.Record)
@@ -226,7 +226,7 @@ namespace Sql.Tests
                 });
                 Assert.NotNull(db2);
 
-                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable. 
+                // We need to wait for database to create its first backup. Currently if database drops too quickly it won't be restorable.
                 // This will be changed in couple of weeks, howerver since building up Managed Instance takes over 60mins, this wait isn't not be a problem.
                 // No need to sleep if we are playing back the recording.
                 if (HttpMockServer.Mode == HttpRecorderMode.Record)
@@ -264,110 +264,110 @@ namespace Sql.Tests
             }
         }
 
-        [Fact]
-        public void ManagedDatabaseExternalBackupRestoreTest()
-        {
-            using (SqlManagementTestContext Context = new SqlManagementTestContext(this))
-            {
-                SqlManagementClient sqlClient = Context.GetClient<SqlManagementClient>();
-                ResourceGroup resourceGroup = Context.CreateResourceGroup();
-                ManagedInstance managedInstance = CreateManagedInstance(Context, sqlClient, resourceGroup);
+        ////[Fact]
+        ////public void ManagedDatabaseExternalBackupRestoreTest()
+        ////{
+        ////    using (SqlManagementTestContext Context = new SqlManagementTestContext(this))
+        ////    {
+        ////        SqlManagementClient sqlClient = Context.GetClient<SqlManagementClient>();
+        ////        ResourceGroup resourceGroup = Context.CreateResourceGroup();
+        ////        ManagedInstance managedInstance = CreateManagedInstance(Context, sqlClient, resourceGroup);
 
-                string testStorageContainerUri = "https://misosictest1.blob.core.windows.net/striped-inc";
-                string testStorageContainerSasToken = "?sv=2018-03-28&ss=bfqt&srt=co&sp=rl&se=2021-10-07T20:57:18Z&st=2019-10-07T12:57:18Z&spr=https&sig=wUFmxnyiCglm9U9%2B3VaPW0YlXFpvn%2BkGc%2B5wesmwWuU%3D";
-                string databaseName = SqlManagementTestUtilities.GenerateName(_testPrefix);
+        ////        string testStorageContainerUri = "https://misosictest1.blob.core.windows.net/striped-inc";
+        ////        string testStorageContainerSasToken = "?sv=2018-03-28&ss=bfqt&srt=co&sp=rl&se=2021-10-07T20:57:18Z&st=2019-10-07T12:57:18Z&spr=https&sig=wUFmxnyiCglm9U9%2B3VaPW0YlXFpvn%2BkGc%2B5wesmwWuU%3D";
+        ////        string databaseName = SqlManagementTestUtilities.GenerateName(_testPrefix);
 
-                // Start external backup restore.
-                var db = sqlClient.ManagedDatabases.BeginCreateOrUpdateAsync(
-                    resourceGroup.Name,
-                    managedInstance.Name,
-                    databaseName,
-                    new ManagedDatabase()
-                    {
-                        CreateMode = "RestoreExternalBackup",
-                        Location = managedInstance.Location,
-                        Collation = managedInstance.Collation,
-                        StorageContainerUri = testStorageContainerUri,
-                        StorageContainerSasToken = testStorageContainerSasToken
-                    }).GetAwaiter().GetResult();
+        ////        // Start external backup restore.
+        ////        var db = sqlClient.ManagedDatabases.BeginCreateOrUpdateAsync(
+        ////            resourceGroup.Name,
+        ////            managedInstance.Name,
+        ////            databaseName,
+        ////            new ManagedDatabase()
+        ////            {
+        ////                CreateMode = "RestoreExternalBackup",
+        ////                Location = managedInstance.Location,
+        ////                Collation = managedInstance.Collation,
+        ////                StorageContainerUri = testStorageContainerUri,
+        ////                StorageContainerSasToken = testStorageContainerSasToken
+        ////            }).GetAwaiter().GetResult();
 
-                RetryAction(() =>
-                {
-                    var success = false;
-                    try
-                    {
-                        var dbs = sqlClient.ManagedDatabases.Get(resourceGroup.Name, managedInstance.Name, databaseName);
+        ////        RetryAction(() =>
+        ////        {
+        ////            var success = false;
+        ////            try
+        ////            {
+        ////                var dbs = sqlClient.ManagedDatabases.Get(resourceGroup.Name, managedInstance.Name, databaseName);
 
-                        if (dbs != null)
-                        {
-                            success = true;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        success = false;
-                    }
+        ////                if (dbs != null)
+        ////                {
+        ////                    success = true;
+        ////                }
+        ////            }
+        ////            catch (Exception e)
+        ////            {
+        ////                success = false;
+        ////            }
 
-                    // Sleep if we are running live to avoid hammering the server.
-                    // No need to sleep if we are playing back the recording.
-                    if (HttpMockServer.Mode == HttpRecorderMode.Record)
-                    {
-                        Thread.Sleep(TimeSpan.FromSeconds(5));
-                    }
+        ////            // Sleep if we are running live to avoid hammering the server.
+        ////            // No need to sleep if we are playing back the recording.
+        ////            if (HttpMockServer.Mode == HttpRecorderMode.Record)
+        ////            {
+        ////                Thread.Sleep(TimeSpan.FromSeconds(5));
+        ////            }
 
-                    return success;
-                });
+        ////            return success;
+        ////        });
 
-                // Wait until restore state is Waiting - this means that all files have been restored from storage container.
-                //
-                RetryAction(() =>
-                {
-                    var restoreDetails = sqlClient.ManagedDatabaseRestoreDetails.Get(resourceGroup.Name, managedInstance.Name, databaseName);
+        ////        // Wait until restore state is Waiting - this means that all files have been restored from storage container.
+        ////        //
+        ////        RetryAction(() =>
+        ////        {
+        ////            var restoreDetails = sqlClient.ManagedDatabaseRestoreDetails.Get(resourceGroup.Name, managedInstance.Name, databaseName);
 
-                    if (restoreDetails.Status == "Waiting")
-                    {
-                        return true;
-                    }
+        ////            if (restoreDetails.Status == "Waiting")
+        ////            {
+        ////                return true;
+        ////            }
 
-                    // Sleep if we are running live to avoid hammering the server.
-                    // No need to sleep if we are playing back the recording.
-                    if (HttpMockServer.Mode == HttpRecorderMode.Record)
-                    {
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
-                    }
+        ////            // Sleep if we are running live to avoid hammering the server.
+        ////            // No need to sleep if we are playing back the recording.
+        ////            if (HttpMockServer.Mode == HttpRecorderMode.Record)
+        ////            {
+        ////                Thread.Sleep(TimeSpan.FromSeconds(30));
+        ////            }
 
-                    return false;
-                });
+        ////            return false;
+        ////        });
 
-                // Initiate restore complete request.
-                //
-                sqlClient.ManagedDatabases.BeginCompleteRestore(resourceGroup.Name, managedInstance.Name, databaseName, new CompleteDatabaseRestoreDefinition()
-                {
-                    LastBackupName = "log2_0"
-                });
+        ////        // Initiate restore complete request.
+        ////        //
+        ////        sqlClient.ManagedDatabases.BeginCompleteRestore(resourceGroup.Name, managedInstance.Name, databaseName, new CompleteDatabaseRestoreDefinition()
+        ////        {
+        ////            LastBackupName = "log2_0"
+        ////        });
 
-                // Wait until restore state is Completed.
-                //
-                RetryAction(() =>
-                {
-                    var restoreDetails = sqlClient.ManagedDatabaseRestoreDetails.Get(resourceGroup.Name, managedInstance.Name, databaseName);
+        ////        // Wait until restore state is Completed.
+        ////        //
+        ////        RetryAction(() =>
+        ////        {
+        ////            var restoreDetails = sqlClient.ManagedDatabaseRestoreDetails.Get(resourceGroup.Name, managedInstance.Name, databaseName);
 
-                    if (restoreDetails.Status == "Completed")
-                    {
-                        return true;
-                    }
+        ////            if (restoreDetails.Status == "Completed")
+        ////            {
+        ////                return true;
+        ////            }
 
-                    // Sleep if we are running live to avoid hammering the server.
-                    // No need to sleep if we are playing back the recording.
-                    if (HttpMockServer.Mode == HttpRecorderMode.Record)
-                    {
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
-                    }
+        ////            // Sleep if we are running live to avoid hammering the server.
+        ////            // No need to sleep if we are playing back the recording.
+        ////            if (HttpMockServer.Mode == HttpRecorderMode.Record)
+        ////            {
+        ////                Thread.Sleep(TimeSpan.FromSeconds(30));
+        ////            }
 
-                    return false;
-                });
-            }
-        }
+        ////            return false;
+        ////        });
+        ////    }
+        ////}
 
         #region Helpers
 
