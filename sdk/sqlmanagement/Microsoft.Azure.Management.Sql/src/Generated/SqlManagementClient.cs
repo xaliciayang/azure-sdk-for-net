@@ -303,9 +303,9 @@ namespace Microsoft.Azure.Management.Sql
         public virtual ILongTermRetentionBackupsOperations LongTermRetentionBackups { get; private set; }
 
         /// <summary>
-        /// Gets the IBackupLongTermRetentionPoliciesOperations.
+        /// Gets the ILongTermRetentionPoliciesOperations.
         /// </summary>
-        public virtual IBackupLongTermRetentionPoliciesOperations BackupLongTermRetentionPolicies { get; private set; }
+        public virtual ILongTermRetentionPoliciesOperations LongTermRetentionPolicies { get; private set; }
 
         /// <summary>
         /// Gets the IManagedBackupShortTermRetentionPoliciesOperations.
@@ -839,7 +839,7 @@ namespace Microsoft.Azure.Management.Sql
             JobTargetGroups = new JobTargetGroupsOperations(this);
             JobVersions = new JobVersionsOperations(this);
             LongTermRetentionBackups = new LongTermRetentionBackupsOperations(this);
-            BackupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesOperations(this);
+            LongTermRetentionPolicies = new LongTermRetentionPoliciesOperations(this);
             ManagedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesOperations(this);
             ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesOperations(this);
             ServerAutomaticTuning = new ServerAutomaticTuningOperations(this);

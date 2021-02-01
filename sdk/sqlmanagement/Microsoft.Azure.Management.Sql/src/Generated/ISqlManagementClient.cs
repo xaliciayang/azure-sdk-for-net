@@ -300,7 +300,7 @@ namespace Microsoft.Azure.Management.Sql
         /// <summary>
         /// Gets the IBackupLongTermRetentionPoliciesOperations.
         /// </summary>
-        IBackupLongTermRetentionPoliciesOperations BackupLongTermRetentionPolicies { get; }
+        ILongTermRetentionPoliciesOperations LongTermRetentionPolicies { get; }
 
         /// <summary>
         /// Gets the IManagedBackupShortTermRetentionPoliciesOperations.
